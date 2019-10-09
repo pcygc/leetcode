@@ -1,0 +1,79 @@
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+            ListNode l3=new ListNode(0);
+            ListNode l4=new ListNode(0);
+            //创建一个链表l3，和列表l4
+            l4.next=l3;
+            //使l4的下一个节点只想l3便于返回l3
+            while(true)//无限循环
+            {   
+                if(l1==null){//l1为空时
+                    if(l2.val>9){//考虑上一个循环进位后为10的情况
+                        l3.val=0;
+                        //判断如果l2后面有内容则将节点后移继续循环，否则终止循环
+                        if(l2.next!=null){
+                            l2.next.val+=1;
+                            l2=l2.next;
+                            l3.next=new ListNode(0);
+                            l3=l3.next;
+                        }else{
+                            l3.next=new ListNode(1);
+                            break;
+                        }
+                    }else{
+                        //因为l1为空，l2不发生进位，则直接将l2赋给l3，将l2后面的内容接到l3后面
+                        l3.val=l2.val;
+                        l3.next=l2.next;
+                        break;
+                    }
+                }else if(l2==null){//l1不为空，l2为空时
+                    //此处逻辑同l1为空时
+                    if(l1.val>9){
+                        l3.val=0;
+                        if(l1.next!=null){
+                            l1.next.val+=1;
+                            l1=l1.next;
+                            l3.next=new ListNode(0);
+                            l3=l3.next;
+                        }else{
+                            l3.val=0;
+                            l3.next=new ListNode(1);
+                            break;
+                        }
+                    }else{
+                        l3.val=l1.val;
+                        l3.next=l1.next;
+                        break;
+                    }
+                    
+                }else{//当l1,l2都不为空时
+                    if((l1.val+l2.val)>9){//如果l1和l2之和大于9
+                        //先将l1+l2-10赋值给l3
+                        l3.val=(l1.val+l2.val-10);
+                        //进位1
+                        if(l1.next!=null){
+                            l1.next.val+=1;//此处可能为10
+                        }else if(l2.next!=null){
+                            l2.next.val+=1;//此处可能为10
+                        }else{
+                            l3.next=new ListNode(1);    
+                        }
+    
+                    }else{
+                        //小于就则将l1+l2赋值给l
+                        l3.val=l1.val+l2.val;
+                    }
+                    //判断如果l1或者l2后面还有内容则将节点后移继续循环，否则终止循环
+                    if(l1.next!=null||l2.next!=null){
+                        l3.next=new ListNode(0);
+                        l1=l1.next;
+                        l2=l2.next;
+                        l3=l3.next;
+                    }else{
+                        break;
+                    } 
+                }
+            }          
+            return l4.next;
+        }
+    }
