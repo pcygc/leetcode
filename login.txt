@@ -1,12 +1,12 @@
- public Boolean checklogin(String id,String pwd){
+public Boolean checklogin(String username,String password){
         DataSource ds = new MyDataSource();
         Connection conn = null;
         PreparedStatement ps = null;
         try {
             conn = ds.getConnection();
-            ps = conn.prepareStatement("select * from user_score where id=? and pwd=?");
-            ps.setString(1,id);
-            ps.setString(1,pwd);
+            ps = conn.prepareStatement("select * from user where username=? and password=?");
+            ps.setString(1,username);
+            ps.setString(2,password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 return true;
