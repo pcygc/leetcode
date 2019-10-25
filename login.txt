@@ -1,0 +1,33 @@
+ public Boolean checklogin(String id,String pwd){
+        DataSource ds = new MyDataSource();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = ds.getConnection();
+            ps = conn.prepareStatement("select * from user_score where id=? and pwd=?");
+            ps.setString(1,id);
+            ps.setString(1,pwd);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(ps!=null){
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(conn!=null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
