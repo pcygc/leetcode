@@ -1,0 +1,44 @@
+ public Boolean registers(String username,String password){
+        DataSource ds = new MyDataSource();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        PreparedStatement ps1 = null;
+        try {
+            conn = ds.getConnection();
+            ps = conn.prepareStatement("select * from user where username=?");
+            ps.setString(1,username);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                ps1=conn.prepareStatement("inset into user values(?,?)");
+                ps1.setString(1,username);
+                ps1.setString(2,password);
+                ResultSet rs1 = ps.executeQuery();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(ps!=null){
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(ps1!=null){
+                try {
+                    ps1.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(conn!=null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
